@@ -29,7 +29,7 @@ Some of the available features include:
 
 ## Build
 
-Please read [build from source documentation](https://www.traccar.org/build/) on the official website.
+Please read [build from source documentation](https://www.traccar.org/build/) on the official website
 
 ## Team
 
