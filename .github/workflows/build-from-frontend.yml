@@ -35,6 +35,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PAT_TOKEN }} # must allow push/dispatch to enroute-docker
-          repository: enroute-logistics/enroute-docker
+          repository: enroute-logistics/enroute-container
           event-type: backend-built
           client-payload: '{"version":"latest"}'
