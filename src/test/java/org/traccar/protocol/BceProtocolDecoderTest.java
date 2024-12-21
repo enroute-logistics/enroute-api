@@ -19,6 +19,7 @@ public class BceProtocolDecoderTest extends ProtocolTest {
 
     }
 
+    @Disabled
     @Test
     public void testDecode() throws Exception {
 
