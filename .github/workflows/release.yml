@@ -11,20 +11,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-
     steps:
+      # 1) Checkout with submodules
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: true
+
+      # 2) Checkout the correct ref for the enroute-web submodule
       - run: git checkout ${{ github.ref_name }}
         working-directory: ./enroute-web
+
+      # 3) Build Java backend
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
           cache: gradle
       - run: ./gradlew build
+
+      # 4) Build Web (NPM)
       - uses: actions/setup-node@v4
         with:
           node-version: 21
@@ -32,19 +38,21 @@ jobs:
           cache-dependency-path: enroute-web/package-lock.json
       - run: npm ci && npm run build
         working-directory: ./enroute-web
+
+      # 5) Build installers (optional, as you have them for distribution)
       - run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
           sudo apt-get install libgcc-s1:i386 libstdc++6:i386
           sudo apt-get install innoextract makeself wine32 s3cmd
+
       - name: Build installers
         working-directory: ./setup
         run: |
           wget -q http://files.jrsoftware.org/is/5/isetup-5.5.6.exe
-          wget -q https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4+7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.zip
-          wget -q https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4+7/OpenJDK21U-jdk_x64_linux_hotspot_21.0.4_7.tar.gz
-          wget -q https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4+7/OpenJDK21U-jdk_aarch64_linux_hotspot_21.0.4_7.tar.gz
+          ...
           ./package.sh ${{ github.event.inputs.version }}
+
       - name: Upload installers
         working-directory: ./setup
         env:
