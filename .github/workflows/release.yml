@@ -15,11 +15,11 @@ jobs:
           fetch-depth: 0
           submodules: true
       # 1.2) Update the submodule to the latest commit
-      - run: git submodule update --remote --checkout enroute-web
+      - run: git submodule update --remote --checkout enroute-app
 
-      # 2) Checkout the correct ref for the enroute-web submodule
+      # 2) Checkout the correct ref for the enroute-app submodule
       - run: git checkout ${{ github.ref_name }}
-        working-directory: ./enroute-web
+        working-directory: ./enroute-app
 
       # 3) Build Java backend
       - uses: actions/setup-java@v4
@@ -34,9 +34,9 @@ jobs:
         with:
           node-version: 21
           cache: npm
-          cache-dependency-path: enroute-web/package-lock.json
+          cache-dependency-path: enroute-app/package-lock.json
       - run: npm ci && npm run build
-        working-directory: ./enroute-web
+        working-directory: ./enroute-app
 
       # 5) Build installers (optional, as you have them for distribution)
       - run: |

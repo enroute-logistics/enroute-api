@@ -1,4 +1,4 @@
-[submodule "enroute-web"]
-	path = enroute-web
+[submodule "enroute-app"]
+	path = enroute-app
 	url = https://github.com/enroute-logistics/enroute-app.git
 	branch = main
