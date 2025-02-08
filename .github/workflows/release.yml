@@ -32,10 +32,10 @@ jobs:
       # 4) Build Web (NPM)
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 18.20.4
           cache: npm
           cache-dependency-path: enroute-app/package-lock.json
-      - run: npm ci && npm run build
+      - run: npm install && npm run build
         working-directory: ./enroute-app
 
       # 5) Build installers (optional, as you have them for distribution)
