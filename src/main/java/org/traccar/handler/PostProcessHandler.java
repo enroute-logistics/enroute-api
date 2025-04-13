@@ -48,6 +48,9 @@ public class PostProcessHandler extends BasePositionHandler {
     public void onPosition(Position position, Callback callback) {
         try {
             if (PositionUtil.isLatest(cacheManager, position)) {
+                LOGGER.info("Processing new position - deviceId: {}, positionId: {}, time: {}",
+                        position.getDeviceId(), position.getId(), position.getDeviceTime());
+
                 Device updatedDevice = new Device();
                 updatedDevice.setId(position.getDeviceId());
                 updatedDevice.setPositionId(position.getId());
@@ -56,7 +59,12 @@ public class PostProcessHandler extends BasePositionHandler {
                         new Condition.Equals("id", updatedDevice.getId())));
 
                 cacheManager.updatePosition(position);
+                LOGGER.info("Broadcasting position update through WebSocket - deviceId: {}, positionId: {}",
+                        position.getDeviceId(), position.getId());
                 connectionManager.updatePosition(true, position);
+            } else {
+                LOGGER.debug("Skipping position update - not latest position for device: {}, positionId: {}",
+                        position.getDeviceId(), position.getId());
             }
         } catch (StorageException error) {
             LOGGER.warn("Failed to update device", error);

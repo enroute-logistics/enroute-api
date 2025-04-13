@@ -307,13 +307,24 @@ public class ConnectionManager implements BroadcastInterface {
     @Override
     public synchronized void updatePosition(boolean local, Position position) {
         if (local) {
+            LOGGER.debug("Broadcasting position update - deviceId: {}, positionId: {}",
+                    position.getDeviceId(), position.getId());
             broadcastService.updatePosition(true, position);
         }
-        for (long userId : deviceUsers.getOrDefault(position.getDeviceId(), Collections.emptySet())) {
+        Set<Long> userIds = deviceUsers.getOrDefault(position.getDeviceId(), Collections.emptySet());
+        LOGGER.debug("Found {} users to notify for position update - deviceId: {}, positionId: {}",
+                userIds.size(), position.getDeviceId(), position.getId());
+
+        for (long userId : userIds) {
             if (listeners.containsKey(userId)) {
+                LOGGER.debug("Notifying user {} of position update - deviceId: {}, positionId: {}",
+                        userId, position.getDeviceId(), position.getId());
                 for (UpdateListener listener : listeners.get(userId)) {
                     listener.onUpdatePosition(position);
                 }
+            } else {
+                LOGGER.debug("No listeners found for user {} - deviceId: {}, positionId: {}",
+                        userId, position.getDeviceId(), position.getId());
             }
         }
     }
@@ -365,9 +376,13 @@ public class ConnectionManager implements BroadcastInterface {
 
     public interface UpdateListener {
         void onKeepalive();
+
         void onUpdateDevice(Device device);
+
         void onUpdatePosition(Position position);
+
         void onUpdateEvent(Event event);
+
         void onUpdateLog(LogRecord record);
     }
 

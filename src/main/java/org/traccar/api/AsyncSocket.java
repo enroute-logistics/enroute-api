@@ -61,13 +61,16 @@ public class AsyncSocket extends WebSocketAdapter implements ConnectionManager.U
     @Override
     public void onWebSocketConnect(Session session) {
         super.onWebSocketConnect(session);
+        LOGGER.info("WebSocket connected for user: {}", userId);
 
         try {
             Map<String, Collection<?>> data = new HashMap<>();
             data.put(KEY_POSITIONS, PositionUtil.getLatestPositions(storage, userId));
+            LOGGER.info("Sending initial positions for user: {}, count: {}", userId, data.get(KEY_POSITIONS).size());
             sendData(data);
             connectionManager.addListener(userId, this);
         } catch (StorageException e) {
+            LOGGER.error("Failed to get initial positions for user: {}", userId, e);
             throw new RuntimeException(e);
         }
     }
@@ -75,44 +78,54 @@ public class AsyncSocket extends WebSocketAdapter implements ConnectionManager.U
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
         super.onWebSocketClose(statusCode, reason);
-
+        LOGGER.info("WebSocket closed for user: {}, status: {}, reason: {}", userId, statusCode, reason);
         connectionManager.removeListener(userId, this);
     }
 
     @Override
     public void onWebSocketText(String message) {
         super.onWebSocketText(message);
+        LOGGER.info("Received WebSocket text message from user: {}, message: {}", userId, message);
 
         try {
             includeLogs = objectMapper.readTree(message).get("logs").asBoolean();
+            LOGGER.info("Updated logs preference for user: {}, includeLogs: {}", userId, includeLogs);
         } catch (JsonProcessingException e) {
-            LOGGER.warn("Socket JSON parsing error", e);
+            LOGGER.warn("Socket JSON parsing error for user: {}", userId, e);
         }
     }
 
     @Override
     public void onKeepalive() {
+        LOGGER.debug("Sending keepalive for user: {}", userId);
         sendData(new HashMap<>());
     }
 
     @Override
     public void onUpdateDevice(Device device) {
+        LOGGER.info("Updating device for user: {}, deviceId: {}", userId, device.getId());
         sendData(Map.of(KEY_DEVICES, List.of(device)));
     }
 
     @Override
     public void onUpdatePosition(Position position) {
+        LOGGER.info("Updating position for user: {}, deviceId: {}, positionId: {}, time: {}",
+                userId, position.getDeviceId(), position.getId(), position.getDeviceTime());
         sendData(Map.of(KEY_POSITIONS, List.of(position)));
     }
 
     @Override
     public void onUpdateEvent(Event event) {
+        LOGGER.info("Updating event for user: {}, deviceId: {}, eventId: {}, type: {}",
+                userId, event.getDeviceId(), event.getId(), event.getType());
         sendData(Map.of(KEY_EVENTS, List.of(event)));
     }
 
     @Override
     public void onUpdateLog(LogRecord record) {
         if (includeLogs) {
+            LOGGER.info("Updating log for user: {}, deviceId: {}",
+                    userId, record.getDeviceId());
             sendData(Map.of(KEY_LOGS, List.of(record)));
         }
     }
@@ -120,10 +133,14 @@ public class AsyncSocket extends WebSocketAdapter implements ConnectionManager.U
     private void sendData(Map<String, Collection<?>> data) {
         if (isConnected()) {
             try {
-                getRemote().sendString(objectMapper.writeValueAsString(data), null);
+                String jsonData = objectMapper.writeValueAsString(data);
+                LOGGER.debug("Sending data to user: {}, data: {}", userId, jsonData);
+                getRemote().sendString(jsonData, null);
             } catch (JsonProcessingException e) {
-                LOGGER.warn("Socket JSON formatting error", e);
+                LOGGER.warn("Socket JSON formatting error for user: {}", userId, e);
             }
+        } else {
+            LOGGER.warn("Attempted to send data to disconnected user: {}", userId);
         }
     }
 }
