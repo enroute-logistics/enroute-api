@@ -63,7 +63,7 @@ public class PostProcessHandler extends BasePositionHandler {
                         position.getDeviceId(), position.getId());
                 connectionManager.updatePosition(true, position);
             } else {
-                LOGGER.debug("Skipping position update - not latest position for device: {}, positionId: {}",
+                LOGGER.info("Skipping position update - not latest position for device: {}, positionId: {}",
                         position.getDeviceId(), position.getId());
             }
         } catch (StorageException error) {

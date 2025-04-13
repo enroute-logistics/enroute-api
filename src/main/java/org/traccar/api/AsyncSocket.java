@@ -97,7 +97,7 @@ public class AsyncSocket extends WebSocketAdapter implements ConnectionManager.U
 
     @Override
     public void onKeepalive() {
-        LOGGER.debug("Sending keepalive for user: {}", userId);
+        LOGGER.info("Sending keepalive for user: {}", userId);
         sendData(new HashMap<>());
     }
 
@@ -134,7 +134,7 @@ public class AsyncSocket extends WebSocketAdapter implements ConnectionManager.U
         if (isConnected()) {
             try {
                 String jsonData = objectMapper.writeValueAsString(data);
-                LOGGER.debug("Sending data to user: {}, data: {}", userId, jsonData);
+                LOGGER.info("Sending data to user: {}, data: {}", userId, jsonData);
                 getRemote().sendString(jsonData, null);
             } catch (JsonProcessingException e) {
                 LOGGER.warn("Socket JSON formatting error for user: {}", userId, e);
