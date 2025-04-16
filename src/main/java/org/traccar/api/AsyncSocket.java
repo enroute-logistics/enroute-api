@@ -102,6 +102,18 @@ public class AsyncSocket extends WebSocketAdapter implements ConnectionManager.U
     }
 
     @Override
+    public void onPeriodicUpdate() {
+        LOGGER.info("Sending periodic update for user: {}", userId);
+        try {
+            Map<String, Collection<?>> data = new HashMap<>();
+            data.put(KEY_POSITIONS, PositionUtil.getLatestPositions(storage, userId));
+            sendData(data);
+        } catch (StorageException e) {
+            LOGGER.error("Failed to get latest positions for periodic update for user: {}", userId, e);
+        }
+    }
+
+    @Override
     public void onUpdateDevice(Device device) {
         LOGGER.info("Updating device for user: {}, deviceId: {}", userId, device.getId());
         sendData(Map.of(KEY_DEVICES, List.of(device)));

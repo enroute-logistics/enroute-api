@@ -287,6 +287,14 @@ public class ConnectionManager implements BroadcastInterface {
         }
     }
 
+    public synchronized void sendPeriodicUpdate() {
+        for (Set<UpdateListener> userListeners : listeners.values()) {
+            for (UpdateListener listener : userListeners) {
+                listener.onPeriodicUpdate();
+            }
+        }
+    }
+
     @Override
     public synchronized void updateDevice(boolean local, Device device) {
         if (local) {
@@ -376,6 +384,8 @@ public class ConnectionManager implements BroadcastInterface {
 
     public interface UpdateListener {
         void onKeepalive();
+
+        void onPeriodicUpdate();
 
         void onUpdateDevice(Device device);
 
