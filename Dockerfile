@@ -1,14 +1,6 @@
 # Multi-stage build for Railway deployment
 FROM node:18-alpine AS frontend-builder
 
-# Build frontend
-WORKDIR /app/frontend
-COPY enroute-app/package.json enroute-app/package-lock.json ./
-RUN npm ci --omit=dev
-
-COPY enroute-app/ ./
-RUN npm run build
-
 # Java build stage
 FROM eclipse-temurin:17-jdk-alpine AS backend-builder
 
