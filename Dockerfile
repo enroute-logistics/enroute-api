@@ -37,7 +37,7 @@ RUN echo '#!/bin/bash' > start.sh && \
     echo 'set -e' >> start.sh && \
     echo '# Set Traccar environment variables' >> start.sh && \
     echo 'export CONFIG_USE_ENVIRONMENT_VARIABLES=true' >> start.sh && \
-    echo 'export WEB_PORT=${PORT:-8080}' >> start.sh && \
+    echo 'export WEB_PORT=${PORT}' >> start.sh && \
     echo 'export WEB_ADDRESS=0.0.0.0' >> start.sh && \
     echo 'export WEB_PATH=./web' >> start.sh && \
     echo 'export WEB_DEBUG=false' >> start.sh && \
@@ -46,7 +46,8 @@ RUN echo '#!/bin/bash' > start.sh && \
     echo 'export DATABASE_CHANGELOG=./schema/changelog-master.xml' >> start.sh && \
     echo 'export DATABASE_USER=${MYSQLUSER:-${MYSQL_ROOT_USER:-root}}' >> start.sh && \
     echo 'export DATABASE_PASSWORD=${MYSQLPASSWORD:-${MYSQL_ROOT_PASSWORD}}' >> start.sh && \
-    echo 'echo "Starting Traccar on port $WEB_PORT"' >> start.sh && \
+    echo 'echo "Starting Traccar web on port $WEB_PORT"' >> start.sh && \
+    echo 'echo "GPS protocols: T55(5005), OsmAnd(5055), GPS103(5001)"' >> start.sh && \
     echo 'echo "Database URL: $DATABASE_URL"' >> start.sh && \
     echo 'echo "Database User: $DATABASE_USER"' >> start.sh && \
     echo 'echo "Database Driver: $DATABASE_DRIVER"' >> start.sh && \
@@ -58,9 +59,9 @@ RUN echo '#!/bin/bash' > start.sh && \
 
 
 
-# Expose multiple ports for different GPS protocols
+# Expose web API port and single GPS protocol port
 EXPOSE ${PORT:-8080}
-EXPOSE 5001 5002 5004 5005 5009 5013 5014 5023 5027 5055
+EXPOSE 5005
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \

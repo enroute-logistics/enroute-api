@@ -9,45 +9,9 @@ healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
 
-# Expose multiple ports for GPS device protocols
-[[deploy.exposedPorts]]
-port = 5001
-protocol = "tcp"
-
-[[deploy.exposedPorts]]
-port = 5002
-protocol = "tcp"
-
-[[deploy.exposedPorts]]
-port = 5004
-protocol = "tcp"
-
+# Expose single GPS device protocol for now
 [[deploy.exposedPorts]]
 port = 5005
-protocol = "tcp"
-
-[[deploy.exposedPorts]]
-port = 5009
-protocol = "tcp"
-
-[[deploy.exposedPorts]]
-port = 5013
-protocol = "tcp"
-
-[[deploy.exposedPorts]]
-port = 5014
-protocol = "tcp"
-
-[[deploy.exposedPorts]]
-port = 5023
-protocol = "tcp"
-
-[[deploy.exposedPorts]]
-port = 5027
-protocol = "tcp"
-
-[[deploy.exposedPorts]]
-port = 5055
 protocol = "tcp"
 
 [env]
