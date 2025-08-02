@@ -3,8 +3,8 @@ FROM node:18-alpine AS frontend-builder
 
 # Build frontend
 WORKDIR /app/frontend
-COPY enroute-app/package*.json ./
-RUN npm ci --only=production
+COPY enroute-app/package.json enroute-app/package-lock.json ./
+RUN npm ci --omit=dev
 
 COPY enroute-app/ ./
 RUN npm run build
