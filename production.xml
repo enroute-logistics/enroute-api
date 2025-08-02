@@ -18,6 +18,18 @@
     <!-- database.user comes from DATABASE_USER env var -->  
     <!-- database.password comes from DATABASE_PASSWORD env var -->
 
+    <!-- GPS Device Protocols - Popular ones enabled -->
+    <entry key='gps103.port'>5001</entry>        <!-- TK102, TK103 series -->
+    <entry key='tk103.port'>5002</entry>         <!-- TK103 variants -->
+    <entry key='gl200.port'>5004</entry>         <!-- Queclink GL200 -->
+    <entry key='t55.port'>5005</entry>           <!-- Generic T55 -->
+    <entry key='meiligao.port'>5009</entry>      <!-- Meiligao devices -->
+    <entry key='h02.port'>5013</entry>           <!-- H02 protocol -->
+    <entry key='jt600.port'>5014</entry>         <!-- JT600 series -->
+    <entry key='gt06.port'>5023</entry>          <!-- GT06 protocol -->
+    <entry key='teltonika.port'>5027</entry>     <!-- Teltonika devices -->
+    <entry key='osmand.port'>5055</entry>        <!-- OsmAnd mobile app -->
+
     <!-- Geocoder configuration -->
     <entry key='geocoder.type'>nominatim</entry>
     <entry key='geocoder.url'>https://nominatim.openstreetmap.org/reverse</entry>

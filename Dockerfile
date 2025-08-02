@@ -58,8 +58,9 @@ RUN echo '#!/bin/bash' > start.sh && \
 
 
 
-# Expose port (Railway will set PORT environment variable)
+# Expose multiple ports for different GPS protocols
 EXPOSE ${PORT:-8080}
+EXPOSE 5001 5002 5004 5005 5009 5013 5014 5023 5027 5055
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
