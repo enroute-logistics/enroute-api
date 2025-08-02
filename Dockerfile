@@ -1,5 +1,4 @@
 # Multi-stage build for Railway deployment
-FROM node:18-alpine AS frontend-builder
 
 # Java build stage
 FROM eclipse-temurin:17-jdk-alpine AS backend-builder
@@ -21,7 +20,6 @@ WORKDIR /app
 
 # Copy built JAR and dependencies
 COPY --from=backend-builder /app/target/ ./target/
-COPY --from=frontend-builder /app/frontend/build/ ./web/
 
 # Copy configuration files
 COPY production.xml ./
