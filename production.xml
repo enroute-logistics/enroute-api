@@ -12,7 +12,7 @@
     <!-- web.port and web.address will come from WEB_PORT and WEB_ADDRESS env vars -->
 
     <!-- Database configuration - values come from environment variables -->
-    <entry key='database.driver'>org.postgresql.Driver</entry>
+    <entry key='database.driver'>com.mysql.cj.jdbc.Driver</entry>
     <entry key='database.changelog'>./schema/changelog-master.xml</entry>
     <!-- database.url comes from DATABASE_URL env var -->
     <!-- database.user comes from DATABASE_USER env var -->  

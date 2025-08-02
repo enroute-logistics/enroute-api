@@ -44,8 +44,8 @@ RUN echo '#!/bin/bash' > start.sh && \
     echo 'export WEB_CONSOLE=false' >> start.sh && \
     echo 'export DATABASE_DRIVER=com.mysql.cj.jdbc.Driver' >> start.sh && \
     echo 'export DATABASE_CHANGELOG=./schema/changelog-master.xml' >> start.sh && \
-    echo 'export DATABASE_USER=${PGUSER}' >> start.sh && \
-    echo 'export DATABASE_PASSWORD=${PGPASSWORD}' >> start.sh && \
+    echo 'export DATABASE_USER=${MYSQLUSER:-${MYSQL_ROOT_USER:-root}}' >> start.sh && \
+    echo 'export DATABASE_PASSWORD=${MYSQLPASSWORD:-${MYSQL_ROOT_PASSWORD}}' >> start.sh && \
     echo 'echo "Starting Traccar on port $WEB_PORT"' >> start.sh && \
     echo 'echo "Database URL: $DATABASE_URL"' >> start.sh && \
     echo 'echo "Database User: $DATABASE_USER"' >> start.sh && \
