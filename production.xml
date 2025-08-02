@@ -2,19 +2,21 @@
 <!DOCTYPE properties SYSTEM 'http://java.sun.com/dtd/properties.dtd'>
 <properties>
 
-    <!-- Web configuration -->
+    <!-- Enable environment variables -->
+    <entry key='config.useEnvironmentVariables'>true</entry>
+
+    <!-- Web configuration - values come from environment variables -->
     <entry key='web.path'>./web</entry>
     <entry key='web.debug'>false</entry>
     <entry key='web.console'>false</entry>
-    <entry key='web.port'>${PORT}</entry>
-    <entry key='web.address'>0.0.0.0</entry>
+    <!-- web.port and web.address will come from WEB_PORT and WEB_ADDRESS env vars -->
 
-    <!-- Database configuration - uses Railway PostgreSQL -->
+    <!-- Database configuration - values come from environment variables -->
     <entry key='database.driver'>org.postgresql.Driver</entry>
-    <entry key='database.url'>${DATABASE_URL}</entry>
-    <entry key='database.user'>${PGUSER}</entry>
-    <entry key='database.password'>${PGPASSWORD}</entry>
     <entry key='database.changelog'>./schema/changelog-master.xml</entry>
+    <!-- database.url comes from DATABASE_URL env var -->
+    <!-- database.user comes from DATABASE_USER env var -->  
+    <!-- database.password comes from DATABASE_PASSWORD env var -->
 
     <!-- Geocoder configuration -->
     <entry key='geocoder.type'>nominatim</entry>
