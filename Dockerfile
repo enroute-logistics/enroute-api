@@ -38,12 +38,18 @@ RUN echo '#!/bin/bash' > start.sh && \
     echo '# Set Traccar environment variables' >> start.sh && \
     echo 'export CONFIG_USE_ENVIRONMENT_VARIABLES=true' >> start.sh && \
     echo 'export WEB_PORT=${PORT:-8080}' >> start.sh && \
+    echo 'export WEB_ADDRESS=0.0.0.0' >> start.sh && \
+    echo 'export WEB_PATH=./web' >> start.sh && \
+    echo 'export WEB_DEBUG=false' >> start.sh && \
+    echo 'export WEB_CONSOLE=false' >> start.sh && \
+    echo 'export DATABASE_DRIVER=com.mysql.cj.jdbc.Driver' >> start.sh && \
+    echo 'export DATABASE_CHANGELOG=./schema/changelog-master.xml' >> start.sh && \
     echo 'export DATABASE_USER=${PGUSER}' >> start.sh && \
     echo 'export DATABASE_PASSWORD=${PGPASSWORD}' >> start.sh && \
-    echo 'export WEB_ADDRESS=0.0.0.0' >> start.sh && \
     echo 'echo "Starting Traccar on port $WEB_PORT"' >> start.sh && \
     echo 'echo "Database URL: $DATABASE_URL"' >> start.sh && \
     echo 'echo "Database User: $DATABASE_USER"' >> start.sh && \
+    echo 'echo "Database Driver: $DATABASE_DRIVER"' >> start.sh && \
     echo 'if [ -z "$JAVA_OPTS" ]; then' >> start.sh && \
     echo '  JAVA_OPTS="-Xms256m -Xmx512m"' >> start.sh && \
     echo 'fi' >> start.sh && \
