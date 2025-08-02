@@ -44,7 +44,10 @@ RUN echo '#!/bin/bash' > start.sh && \
     echo 'echo "Starting Traccar on port $WEB_PORT"' >> start.sh && \
     echo 'echo "Database URL: $DATABASE_URL"' >> start.sh && \
     echo 'echo "Database User: $DATABASE_USER"' >> start.sh && \
-    echo 'java ${JAVA_OPTS:-"-Xms256m -Xmx512m"} -jar target/*.jar production.xml' >> start.sh && \
+    echo 'if [ -z "$JAVA_OPTS" ]; then' >> start.sh && \
+    echo '  JAVA_OPTS="-Xms256m -Xmx512m"' >> start.sh && \
+    echo 'fi' >> start.sh && \
+    echo 'java $JAVA_OPTS -jar target/*.jar production.xml' >> start.sh && \
     chmod +x start.sh
 
 
