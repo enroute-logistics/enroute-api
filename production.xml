@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM 'http://java.sun.com/dtd/properties.dtd'>
+<properties>
+
+    <!-- Web configuration -->
+    <entry key='web.path'>./web</entry>
+    <entry key='web.debug'>false</entry>
+    <entry key='web.console'>false</entry>
+    <entry key='web.port'>${PORT}</entry>
+    <entry key='web.address'>0.0.0.0</entry>
+
+    <!-- Database configuration - uses Railway PostgreSQL -->
+    <entry key='database.driver'>org.postgresql.Driver</entry>
+    <entry key='database.url'>${DATABASE_URL}</entry>
+    <entry key='database.user'>${PGUSER}</entry>
+    <entry key='database.password'>${PGPASSWORD}</entry>
+    <entry key='database.changelog'>./schema/changelog-master.xml</entry>
+
+    <!-- Geocoder configuration -->
+    <entry key='geocoder.type'>nominatim</entry>
+    <entry key='geocoder.url'>https://nominatim.openstreetmap.org/reverse</entry>
+
+    <!-- Media path -->
+    <entry key='media.path'>./media</entry>
+
+    <!-- Logging configuration -->
+    <entry key='logger.console'>true</entry>
+    <entry key='logger.queries'>false</entry>
+    <entry key='logger.fullStackTraces'>false</entry>
+
+    <!-- Mail configuration (optional) -->
+    <entry key='mail.smtp.host'>${MAIL_SMTP_HOST}</entry>
+    <entry key='mail.smtp.port'>${MAIL_SMTP_PORT}</entry>
+    <entry key='mail.smtp.ssl'>${MAIL_SMTP_SSL}</entry>
+    <entry key='mail.smtp.username'>${MAIL_SMTP_USERNAME}</entry>
+    <entry key='mail.smtp.password'>${MAIL_SMTP_PASSWORD}</entry>
+    <entry key='mail.smtp.from'>${MAIL_FROM}</entry>
+
+    <!-- Security -->
+    <entry key='web.sanitize'>true</entry>
+    <entry key='web.cacheControl'>max-age=3600,public</entry>
+
+</properties> 

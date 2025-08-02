@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TaskWebSocketPeriodicUpdate implements ScheduleTask {
 
-  private static final long PERIOD_SECONDS = 3; // Send updates every 30 seconds
+  private static final long PERIOD_SECONDS = 3; // Send updates every 3 seconds
 
   private final ConnectionManager connectionManager;
 

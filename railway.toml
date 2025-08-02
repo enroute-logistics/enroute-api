@@ -1,0 +1,15 @@
+[build]
+builder = "DOCKERFILE"
+
+[build.buildArgs]
+
+[deploy]
+healthcheckPath = "/api/server"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[env]
+RAILWAY_STATIC_URL = "/"
+NODE_ENV = "production"
+JAVA_OPTS = "-Xms512m -Xmx1024m" 
