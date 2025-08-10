@@ -18,8 +18,9 @@
     <!-- database.user comes from DATABASE_USER env var -->  
     <!-- database.password comes from DATABASE_PASSWORD env var -->
 
-    <!-- GPS Device Protocols - Start with just T55 (most compatible) -->
+    <!-- GPS Device Protocols - Enable T55 and H02 -->
     <entry key='t55.port'>5005</entry>           <!-- Generic T55 - works with most devices -->
+    <entry key='h02.port'>5013</entry>           <!-- H02 protocol devices -->
 
     <!-- Geocoder configuration -->
     <entry key='geocoder.type'>nominatim</entry>

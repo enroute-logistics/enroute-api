@@ -32,39 +32,16 @@ RUN mkdir -p ./logs ./data ./media ./web && \
 # Set permissions
 RUN chmod +x ./target/*.jar
 
-# Create startup script that maps Railway env vars to Traccar expected names
-RUN echo '#!/bin/bash' > start.sh && \
-    echo 'set -e' >> start.sh && \
-    echo '# Set Traccar environment variables' >> start.sh && \
-    echo 'export CONFIG_USE_ENVIRONMENT_VARIABLES=true' >> start.sh && \
-    echo 'export WEB_PORT=${PORT}' >> start.sh && \
-    echo 'export WEB_ADDRESS=0.0.0.0' >> start.sh && \
-    echo 'export WEB_PATH=./web' >> start.sh && \
-    echo 'export WEB_DEBUG=false' >> start.sh && \
-    echo 'export WEB_CONSOLE=false' >> start.sh && \
-    echo 'export DATABASE_DRIVER=com.mysql.cj.jdbc.Driver' >> start.sh && \
-    echo 'export DATABASE_CHANGELOG=./schema/changelog-master.xml' >> start.sh && \
-    echo 'export DATABASE_USER=${MYSQLUSER:-${MYSQL_ROOT_USER:-root}}' >> start.sh && \
-    echo 'export DATABASE_PASSWORD=${MYSQLPASSWORD:-${MYSQL_ROOT_PASSWORD}}' >> start.sh && \
-    echo 'echo "Starting Traccar web on port $WEB_PORT"' >> start.sh && \
-    echo 'echo "GPS protocols: T55(5005), OsmAnd(5055), GPS103(5001)"' >> start.sh && \
-    echo 'echo "Database URL: $DATABASE_URL"' >> start.sh && \
-    echo 'echo "Database User: $DATABASE_USER"' >> start.sh && \
-    echo 'echo "Database Driver: $DATABASE_DRIVER"' >> start.sh && \
-    echo 'if [ -z "$JAVA_OPTS" ]; then' >> start.sh && \
-    echo '  JAVA_OPTS="-Xms256m -Xmx512m"' >> start.sh && \
-    echo 'fi' >> start.sh && \
-    echo 'java $JAVA_OPTS -jar target/*.jar production.xml' >> start.sh && \
-    chmod +x start.sh
+# Reasonable JVM defaults; can be overridden via env
+ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
-
-
-# Expose web API port and single GPS protocol port
+# Expose web API port and GPS protocol ports (T55=5005, H02=5013)
 EXPOSE ${PORT:-8080}
-EXPOSE 5005
+EXPOSE 5005 5013
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:${PORT:-8080}/api/server || exit 1
 
-CMD ["./start.sh"] 
+# Run server directly; expects env vars like WEB_PORT/WEB_ADDRESS, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD
+CMD ["sh", "-lc", "java $JAVA_OPTS -jar target/*.jar production.xml"] 

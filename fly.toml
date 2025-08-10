@@ -1,0 +1,66 @@
+# fly.toml app configuration file generated for enroute-api on Fly.io
+# Change the "app" name below to your Fly app name if different
+
+app = "enroute-api"
+primary_region = "iad"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[build]
+  # Using Dockerfile in project root
+
+[env]
+  # Fly doesn't set PORT automatically for Docker images; set it to 8080
+  PORT = "8080"
+  CONFIG_USE_ENVIRONMENT_VARIABLES = "true"
+  WEB_DEBUG = "false"
+  WEB_CONSOLE = "false"
+
+# HTTP(S) service for the web API
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 200
+    soft_limit = 150
+
+  [[services.http_checks]]
+    interval = "15s"
+    timeout  = "10s"
+    grace_period = "30s"
+    path = "/api/server"
+    method = "get"
+    tls = true
+
+# TCP service(s) for GPS device protocols
+# T55 on 5005
+[[services]]
+  protocol = "tcp"
+  internal_port = 5005
+
+  [[services.ports]]
+    port = 5005
+
+# H02 on 5013
+[[services]]
+  protocol = "tcp"
+  internal_port = 5013
+
+  [[services.ports]]
+    port = 5013
+
+[checks]
+  # Optional process-level checks can be added here
+
+[deploy]
+  strategy = "rolling"
