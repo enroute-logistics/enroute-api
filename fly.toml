@@ -47,7 +47,7 @@ kill_timeout = "5s"
     tls = true
 
 # TCP service(s) for GPS device protocols
-# T55 on 5005
+# T55 on 5005 (raw TCP, no TLS/http handlers)
 [[services]]
   protocol = "tcp"
   internal_port = 5005
@@ -55,7 +55,7 @@ kill_timeout = "5s"
   [[services.ports]]
     port = 5005
 
-# H02 on 5013
+# H02 on 5013 (raw TCP, no TLS/http handlers)
 [[services]]
   protocol = "tcp"
   internal_port = 5013
@@ -63,13 +63,14 @@ kill_timeout = "5s"
   [[services.ports]]
     port = 5013
 
-# OsmAnd on 5055
+# OsmAnd on 5055 over HTTPS (Fly terminates TLS and forwards HTTP to Traccar OsmAnd server)
 [[services]]
   protocol = "tcp"
   internal_port = 5055
 
   [[services.ports]]
     port = 5055
+    handlers = ["tls", "http"]
 
 [checks]
   # Optional process-level checks can be added here
