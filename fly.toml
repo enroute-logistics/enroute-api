@@ -10,8 +10,12 @@ kill_timeout = "5s"
   # Using Dockerfile in project root
 
 [env]
-  # Fly doesn't set PORT automatically for Docker images; set it to 8080
+  # Web server binding
   PORT = "8080"
+  WEB_PORT = "8080"
+  WEB_ADDRESS = "0.0.0.0"
+
+  # Traccar config
   CONFIG_USE_ENVIRONMENT_VARIABLES = "true"
   WEB_DEBUG = "false"
   WEB_CONSOLE = "false"

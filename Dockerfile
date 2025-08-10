@@ -16,6 +16,10 @@ FROM eclipse-temurin:17-jre-alpine
 # Install necessary packages
 RUN apk add --no-cache bash curl
 
+# Ensure JAVA_HOME and PATH are set for Temurin images
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH="$JAVA_HOME/bin:${PATH}"
+
 WORKDIR /app
 
 # Copy built JAR and dependencies
@@ -44,4 +48,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:${PORT:-8080}/api/server || exit 1
 
 # Run server directly; expects env vars like WEB_PORT/WEB_ADDRESS, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD
-CMD ["sh", "-lc", "java $JAVA_OPTS -jar target/*.jar production.xml"] 
+CMD ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "target/tracker-server.jar", "production.xml"] 
