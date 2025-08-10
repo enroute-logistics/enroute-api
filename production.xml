@@ -18,9 +18,10 @@
     <!-- database.user comes from DATABASE_USER env var -->  
     <!-- database.password comes from DATABASE_PASSWORD env var -->
 
-    <!-- GPS Device Protocols - Enable T55 and H02 -->
+    <!-- GPS Device Protocols - Enable T55, H02 and OsmAnd -->
     <entry key='t55.port'>5005</entry>           <!-- Generic T55 - works with most devices -->
     <entry key='h02.port'>5013</entry>           <!-- H02 protocol devices -->
+    <entry key='osmand.port'>5055</entry>        <!-- OsmAnd / Traccar Client -->
 
     <!-- Geocoder configuration -->
     <entry key='geocoder.type'>nominatim</entry>

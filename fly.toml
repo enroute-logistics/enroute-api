@@ -63,6 +63,14 @@ kill_timeout = "5s"
   [[services.ports]]
     port = 5013
 
+# OsmAnd on 5055
+[[services]]
+  protocol = "tcp"
+  internal_port = 5055
+
+  [[services.ports]]
+    port = 5055
+
 [checks]
   # Optional process-level checks can be added here
 
