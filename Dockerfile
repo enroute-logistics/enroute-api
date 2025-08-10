@@ -47,5 +47,5 @@ EXPOSE 5005 5013
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:${PORT:-8080}/api/server || exit 1
 
-# Use shell form so wildcard expands to the actual jar name
-CMD sh -lc 'exec java $JAVA_OPTS -jar target/*.jar production.xml' 
+# Use shell form so wildcard expands; call java via absolute path
+CMD sh -lc 'exec /opt/java/openjdk/bin/java $JAVA_OPTS -jar target/*.jar production.xml' 
