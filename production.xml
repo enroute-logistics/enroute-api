@@ -14,6 +14,8 @@
     <!-- Database configuration - values come from environment variables -->
     <entry key='database.driver'>com.mysql.cj.jdbc.Driver</entry>
     <entry key='database.changelog'>./schema/changelog-master.xml</entry>
+    <entry key='database.registerUnknown'>true</entry>
+    <entry key='h02.address'>0.0.0.0</entry>
     <!-- database.url comes from DATABASE_URL env var -->
     <!-- database.user comes from DATABASE_USER env var -->  
     <!-- database.password comes from DATABASE_PASSWORD env var -->
