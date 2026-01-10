@@ -1,0 +1,23 @@
+services:
+  api:
+    build: .
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
+      - "5005:5005" # T55 protocol
+      - "5013:5013" # H02 protocol
+      - "5055:5055" # OsmAnd protocol
+    env_file:
+      - .env
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS:--Xms256m -Xmx512m}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./media:/app/media
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT:-8080}/api/server"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3

@@ -1,20 +1,20 @@
 # Multi-stage build for Railway deployment
 
-# Java build stage
-FROM eclipse-temurin:17-jdk-alpine AS backend-builder
-
-# Install gradle
-RUN apk add --no-cache gradle
+# Java build stage (use non-alpine for ARM64/Apple Silicon compatibility)
+FROM eclipse-temurin:17-jdk AS backend-builder
 
 WORKDIR /app
-COPY . .
-RUN gradle build --no-daemon
+COPY gradlew settings.gradle build.gradle ./
+COPY gradle ./gradle
+COPY src ./src
+COPY schema ./schema
+RUN ./gradlew build --no-daemon -x test
 
 # Final runtime stage
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 
 # Install necessary packages
-RUN apk add --no-cache bash curl
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
 # Ensure JAVA_HOME and PATH are set for Temurin images
 ENV JAVA_HOME=/opt/java/openjdk
